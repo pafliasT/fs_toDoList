@@ -1,54 +1,74 @@
 _schema-version: '3.1'
 ID: toDoList
+description: A simple CAP project.
 version: 1.0.0
-description: "A simple CAP project."
-parameters:
-  enable-parallel-deployments: true
-build-parameters:
-  before-all:
-    - builder: custom
-      commands:
-        - npx cds build --production
 modules:
   - name: toDoList-srv
     type: nodejs
     path: gen/srv
+    requires:
+      - name: toDoList-db
+      - name: toDoList-auth
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: '${default-url}'
     parameters:
       buildpack: nodejs_buildpack
     build-parameters:
       builder: npm
-    provides:
-      - name: srv-api # required by consumers of CAP services (e.g. approuter)
-        properties:
-          srv-url: ${default-url}
-    requires:
-      - name: toDoList-db
-      - name: toDoList-auth
-
   - name: toDoList-db-deployer
     type: hdb
     path: gen/db
-    parameters:
-      buildpack: nodejs_buildpack
     requires:
       - name: toDoList-db
-
+    parameters:
+      buildpack: nodejs_buildpack
   - name: toDoList
     type: approuter.nodejs
-    path: app/ # from cds.env.folders. Consider also cds.env.build.target -> gen/app
-    parameters:
-      keep-existing-routes: true
-      disk-quota: 256M
-      memory: 256M
+    path: app/
     requires:
       - name: srv-api
         group: destinations
         properties:
-          name: srv-api # must be used in xs-app.json as well
-          url: ~{srv-url}
           forwardAuthToken: true
+          name: srv-api
+          url: '~{srv-url}'
       - name: toDoList-auth
-
+      - name: toDoList-destination-service
+        group: destinations
+        properties:
+          forwardAuthToken: false
+          name: ui5
+          url: 'https://ui5.sap.com'
+    parameters:
+      disk-quota: 1024M
+      keep-existing-routes: true
+      memory: 256M
+  - name: toDoList-app-content
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: toDoList-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - comtodolistprimary.zip
+          name: comtodolistprimary
+          target-path: resources/
+  - name: comtodolistprimary
+    type: html5
+    path: app/primary
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - 'npm run build:cf'
+      supported-platforms: []
 resources:
   - name: toDoList-db
     type: com.sap.xs.hdi-container
@@ -58,9 +78,41 @@ resources:
   - name: toDoList-auth
     type: org.cloudfoundry.managed-service
     parameters:
+      config:
+        tenant-mode: dedicated
+        xsappname: 'toDoList-${org}-${space}'
+      path: ./xs-security.json
       service: xsuaa
       service-plan: application
-      path: ./xs-security.json
+  - name: toDoList-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-name: toDoList-html5-srv
+      service-plan: app-host
+  - name: toDoList-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
       config:
-        xsappname: toDoList-${org}-${space}
-        tenant-mode: dedicated
+        HTML5Runtime_enabled: false
+        init_data:
+          instance:
+            destinations:
+              - Authentication: NoAuthentication
+                Name: ui5
+                ProxyType: Internet
+                Type: HTTP
+                URL: 'https://ui5.sap.com'
+            existing_destinations_policy: update
+        version: 1.0.0
+      service: destination
+      service-name: toDoList-destination-service
+      service-plan: lite
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npx cds build --production

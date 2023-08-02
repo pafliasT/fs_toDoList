@@ -1,0 +1,1 @@
+using catalogService as service from '../../srv/cat-service';
