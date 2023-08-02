@@ -1,9 +1,27 @@
-### 
-POST http://localhost:4004/odata/v4/catalog/createTodo
+### CREATE
+POST http://localhost:4004/todoapi/createTodoItem
 Content-Type: application/json
 
 {
-    "ID":"deb095cd-793c-4942-b484-f59a01bd247b",
+    "ID":"70700fc0-a16a-454d-a4d6-bebebedde887",
     "name":"THOMAS",
     "completed" : true
+}
+
+
+### UPDATE
+POST http://localhost:4004/todoapi/updateTodoItem
+Content-Type: application/json
+
+{
+    "ID":"70700fc0-a16a-454d-a4d6-bebebedde887",
+    "name":"aaaaaaaaaaaaaaaaaa",
+    "completed" : false
+}
+### DELETE
+POST  http://localhost:4004/todoapi/deleteTodoItem
+Content-Type: application/json
+
+{
+    "ID": "70700fc0-a16a-454d-a4d6-bebebedde887"
 }
