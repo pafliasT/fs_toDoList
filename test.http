@@ -1,0 +1,9 @@
+### 
+POST http://localhost:4004/odata/v4/catalog/createTodo
+Content-Type: application/json
+
+{
+    "ID":"deb095cd-793c-4942-b484-f59a01bd247b",
+    "name":"THOMAS",
+    "completed" : true
+}
