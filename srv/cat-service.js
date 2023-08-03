@@ -4,14 +4,14 @@ const handleErrors = (operation, req, error) => {
 };
 
 const createTodoItem = async (req, TodoItem) => {
-    const { ID, name, completed } = req.data;
+    const { ID, name, completed, todoList_ID } = req.data;
     const existingTodo = await SELECT.one.from(TodoItem).where({ ID });
 
     if (existingTodo) {
         return req.error(409, `Todo with ID ${ID} already exists`);
     }
 
-    await INSERT.into(TodoItem).entries([{ ID, name, completed }]);
+    await INSERT.into(TodoItem).entries([{ ID, name, completed, todoList_ID }]);
     return `Todo with ID ${ID} created successfully`;
 };
 
