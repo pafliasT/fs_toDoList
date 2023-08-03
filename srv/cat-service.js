@@ -17,6 +17,10 @@ const createTodoItem = async (req, TodoItem) => {
 
 const updateTodoItem = async (req, TodoItem) => {
     const { ID, name, completed } = req.data;
+
+    const exisitngTodoItem = await SELECT.one.from(TodoItem).where({ ID });
+    if(!exisitngTodoItem) return req.error(409, `Todo with ID ${ID} does not exist`);
+
     await UPDATE(TodoItem).set({ name, completed }).where({ ID });
     return `Todo with ID ${ID} updated successfully`;
 };
@@ -45,6 +49,9 @@ const createTodoList = async (req, TodoList) => {
 
 const updateTodoList = async (req, TodoList) => {
     const { ID, name } = req.data;
+
+    const exisitngTodoList = await SELECT.one.from(TodoList).where({ ID });
+    if(!exisitngTodoList) return req.error(409, `Todo list with ID ${ID} does not exist`);
 
     await UPDATE(TodoList).set({ name }).where({ ID });
     return `Todo list with ${ID} updated successfully`;
