@@ -1,5 +1,5 @@
 const handleErrors = (operation, req, error) => {
-    console.error(`Error ${operation} Todo:`, error.message);
+    console.error(`Error while ${operation} Todo:`, error.message);
     return req.reject(error.code || 500, error.message);
 };
 
@@ -57,7 +57,7 @@ const deleteTodoList = async (req, TodoList) => {
     if(!existingTodoList) return req.error(404, `Todo with ID ${ID} does not exist`);
 
     await DELETE.from(TodoList).where({ ID });
-    return `Todo with ID ${ID} deleted successfully`;
+    return `Todo list with ID ${ID} deleted successfully`;
 };
 
 module.exports = (srv) => {
@@ -99,7 +99,7 @@ module.exports = (srv) => {
         try {
             return await updateTodoList(req, TodoList);
         } catch (error) {
-            return handleErrors('adding', req, error);
+            return handleErrors('updating', req, error);
         }
     });
 
@@ -107,7 +107,7 @@ module.exports = (srv) => {
         try {
             return await deleteTodoList(req, TodoList);
         } catch (error) {
-            return handleErrors('adding', req, error);
+            return handleErrors('deleting', req, error);
         }
     });
 };
