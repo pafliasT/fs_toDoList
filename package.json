@@ -20,6 +20,7 @@
     "rimraf": "^3.0.2"
   },
   "scripts": {
+    "dev": "cds watch --profile hybrid",
     "start": "cds-serve",
     "watch-primary": "cds watch --open primary/webapp/index.html?sap-ui-xx-viewCache=false",
     "undeploy": "cf undeploy toDoList --delete-services --delete-service-keys --delete-service-brokers",

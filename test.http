@@ -8,7 +8,6 @@ Content-Type: application/json
     "completed" : true
 }
 
-
 ### UPDATE
 POST http://localhost:4004/todoapi/updateTodoItem
 Content-Type: application/json
@@ -18,10 +17,37 @@ Content-Type: application/json
     "name":"aaaaaaaaaaaaaaaaaa",
     "completed" : false
 }
+
 ### DELETE
 POST  http://localhost:4004/todoapi/deleteTodoItem
 Content-Type: application/json
 
 {
     "ID": "70700fc0-a16a-454d-a4d6-bebebedde887"
+}
+
+### CREATE LIST
+POST http://localhost:4004/todoapi/createTodoList
+Content-Type: application/json
+
+{
+    "ID":"5474e291-0505-4be0-b2bd-915e7b3c33ff",
+    "name":"Todo List"
+}
+
+### UPDATE LIST
+POST http://localhost:4004/todoapi/updateTodoList
+Content-Type: application/json
+
+{
+    "ID":"5474e291-0505-4be0-b2bd-915e7b3c33ff",
+    "name":"Todos"
+}
+
+### DELETE LIST
+POST http://localhost:4004/todoapi/deleteTodoList
+Content-Type: application/json
+
+{
+    "ID":"5474e291-0505-4be0-b2bd-915e7b3c33ff"
 }
