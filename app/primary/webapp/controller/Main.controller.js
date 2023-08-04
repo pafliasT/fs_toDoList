@@ -100,6 +100,24 @@ sap.ui.define([
                         MessageBox.error(sErrorMessage, { title: "Error Creating Todo Item" });
                     });
             },
+            onStartEditTodoItem: function (oEvent) {
+                const oColumnListItem = oEvent.getSource().getParent();
+                const oNameCell = oColumnListItem.getCells()[1];
+                const oInputNameCell = new Input({ value: "{name}" });
+
+                oInputNameCell.attachSubmit(null, this.onFinishEditTodoList);
+
+                oColumnListItem.removeCell(oNameCell);
+                oColumnListItem.insertCell(oInputNameCell, 1);
+            },
+            onFinishEditTodoList: function (oEvent) {
+                const oColumnListItem = oEvent.getSource().getParent();
+                const oInputNameCell = oColumnListItem.getCells()[1];
+                const oNameCell = new Text({ text: "{name}" });
+
+                oColumnListItem.removeCell(oInputNameCell);
+                oColumnListItem.insertCell(oNameCell, 1);
+            },
             onDeleteTodoItem: function (oEvent) {
                 const sTodoItemID = oEvent.getSource().getBindingContext().getProperty("ID");
                 const sTodoListID = this.getView().getModel("state").getProperty("/selectedTodoList");
@@ -162,7 +180,7 @@ sap.ui.define([
                         cells: [
                             new CheckBox({ selected: "{completed}", select: this.updateTodoListStatistics.bind(this) }),
                             new Text({ text: "{name}" }),
-                            new Button({ icon: "sap-icon://edit", type: "Transparent" }),
+                            new Button({ icon: "sap-icon://edit", type: "Transparent", press: this.onStartEditTodoItem.bind(this) }),
                             new Button({ icon: "sap-icon://delete", type: "Transparent", press: this.onDeleteTodoItem.bind(this) })
                         ]
                     })
