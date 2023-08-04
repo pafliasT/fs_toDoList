@@ -93,11 +93,29 @@ sap.ui.define([
                     .then(function () {
                         MessageToast.show("Todo Item created successfully!");
                         this.displayTodoListItems(sSelectedTodoListID);
-                        this.updateTodoListStatistics(sSelectedTodoListID);
+                        this.updateTodoListStatistics();
                     }.bind(this))
                     .catch(function (oError) {
                         const sErrorMessage = oError && oError.responseJSON && oError.responseJSON.error ? oError.responseJSON.error.message : "An unexpected error occurred";
                         MessageBox.error(sErrorMessage, { title: "Error Creating Todo Item" });
+                    });
+            },
+            onDeleteTodoItem: function (oEvent) {
+                const sTodoItemID = oEvent.getSource().getBindingContext().getProperty("ID");
+                const sTodoListID = this.getView().getModel("state").getProperty("/selectedTodoList");
+                const sEndpoint = "/todoapi/deleteTodoItem";
+                const oPayload = { ID: sTodoItemID };
+
+                axios.post(sEndpoint, oPayload)
+                    .then(function () {
+                        MessageToast.show("Todo Item deleted succesfully!");
+                        this.displayTodoListItems(sTodoListID);
+                        this.updateTodoListStatistics();
+                    }.bind(this))
+                    .catch(function (oError) {
+                        console.log(oError);
+                        const sErrorMessage = oError && oError.responseJSON && oError.responseJSON.error ? oError.responseJSON.error.message : "An unexpected error occurred";
+                        MessageBox.error(sErrorMessage, { title: "Error Deleting Todo Item" });
                     });
             },
             bindTodoListNameToMasterTitle: function (sTodoListID) {
@@ -145,7 +163,7 @@ sap.ui.define([
                             new CheckBox({ selected: "{completed}", select: this.updateTodoListStatistics.bind(this) }),
                             new Text({ text: "{name}" }),
                             new Button({ icon: "sap-icon://edit", type: "Transparent" }),
-                            new Button({ icon: "sap-icon://delete", type: "Transparent" })
+                            new Button({ icon: "sap-icon://delete", type: "Transparent", press: this.onDeleteTodoItem.bind(this) })
                         ]
                     })
                 });
