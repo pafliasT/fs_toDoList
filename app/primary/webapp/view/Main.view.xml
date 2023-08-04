@@ -26,6 +26,16 @@
                                 </OverflowToolbarButton>
                             </OverflowToolbar>
                         </customHeader>
+
+                        <Table id="todolist-items">
+                            <columns>
+                                <Column width="3rem" />
+                                <Column/>
+                                <Column width="2.6rem" hAlign="End"/>
+                                <Column width="2.7rem" hAlign="End"/>
+                            </columns>
+                            <items/>
+                        </Table>
                     </Page>
                 </masterPages>               
 
