@@ -18,7 +18,7 @@ sap.ui.define([
                 const sTodoListID = oEvent.getSource().getBindingContext().getProperty("ID");
                 this.getView().getModel("state").setProperty("/selectedTodoList", sTodoListID);
             },
-            onCreateTodoList: async function () {
+            onCreateTodoList: function () {
                 const sEndpoint = "/todoapi/createTodoList";
                 const oPayload = {
                     ID:   uuid.v4(),
@@ -34,6 +34,22 @@ sap.ui.define([
                     .catch(function (oError) {
                         const sErrorMessage = oError && oError.responseJSON && oError.responseJSON.error ? oError.responseJSON.error.message : "An unexpected error occurred";
                         MessageBox.error(sErrorMessage, { title: "Error Creating Todo List" });
+                    });
+            },
+            onDeleteTodoList: function () {
+                const sEndpoint = "/todoapi/deleteTodoList";
+                const oPayload = { ID: this.getView().getModel("state").getProperty("/selectedTodoList") };
+
+                axios.post(sEndpoint, oPayload)
+                    .then(function () {
+                        MessageToast.show("Todo List deleted succesfully!");
+                        this.byId("todolist-panel").getBinding("content").refresh();
+                        this.updateTodoListStatistics();
+                    }.bind(this))
+                    .catch(function (oError) {
+                        console.log(oError);
+                        const sErrorMessage = oError && oError.responseJSON && oError.responseJSON.error ? oError.responseJSON.error.message : "An unexpected error occurred";
+                        MessageBox.error(sErrorMessage, { title: "Error Deleting Todo List" });
                     });
             },
             updateTodoListStatistics: function () {

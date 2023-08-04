@@ -17,7 +17,7 @@
                                         <OverflowToolbarLayoutData priority="AlwaysOverflow" />
                                     </layoutData>
                                 </OverflowToolbarButton>
-                                <OverflowToolbarButton text="Delete Todo List" icon="sap-icon://delete" type="Transparent" >
+                                <OverflowToolbarButton text="Delete Todo List" icon="sap-icon://delete" type="Transparent" press=".onDeleteTodoList" >
                                     <layoutData>
                                         <OverflowToolbarLayoutData priority="AlwaysOverflow" />
                                     </layoutData>
