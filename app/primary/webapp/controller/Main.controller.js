@@ -105,12 +105,12 @@ sap.ui.define([
                 const oNameCell = oColumnListItem.getCells()[1];
                 const oInputNameCell = new Input({ value: "{name}" });
 
-                oInputNameCell.attachSubmit(null, this.onFinishEditTodoList);
+                oInputNameCell.attachSubmit(null, this.onFinishEditTodoItem);
 
                 oColumnListItem.removeCell(oNameCell);
                 oColumnListItem.insertCell(oInputNameCell, 1);
             },
-            onFinishEditTodoList: function (oEvent) {
+            onFinishEditTodoItem: function (oEvent) {
                 const oColumnListItem = oEvent.getSource().getParent();
                 const oInputNameCell = oColumnListItem.getCells()[1];
                 const oNameCell = new Text({ text: "{name}" });
