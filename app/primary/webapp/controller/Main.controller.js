@@ -2,13 +2,21 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
     "sap/m/MessageBox",
+    "sap/ui/model/json/JSONModel",
 ],
-    function (Controller, MessageToast, MessageBox) {
+    function (Controller, MessageToast, MessageBox, JSONModel) {
         "use strict";
 
         return Controller.extend("com.todolist.primary.controller.Main", {
             onInit: function () {
+                const oStateModel = new JSONModel({ selectedTodoList:  null });
+                this.getView().setModel(oStateModel, "state");
+
                 this.updateTodoListStatistics();
+            },
+            onSelectTodoList: function (oEvent) {
+                const sTodoListID = oEvent.getSource().getBindingContext().getProperty("ID");
+                this.getView().getModel("state").setProperty("/selectedTodoList", sTodoListID);
             },
             onCreateTodoList: async function () {
                 const sEndpoint = "/todoapi/createTodoList";

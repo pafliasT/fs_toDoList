@@ -1,14 +1,43 @@
 <mvc:View controllerName="com.todolist.primary.controller.Main"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
+    <Page id="page" showHeader="false">
         <content>
-            <Button text="New List" icon="sap-icon://add" type="Emphasized" class="sapUiMediumMarginBegin sapUiTinyMarginTop" press=".onCreateTodoList" />
-            <Panel id="todolist-panel" content="{/TodoList}" backgroundDesign="Transparent">
-                <content>
-                    <GenericTile header="{name}" class="sapUiSmallMargin" />
-                </content>
-            </Panel>
+            <SplitContainer>
+                <masterPages>
+                    <Page backgroundDesign="List" showHeader="true">
+                        <customHeader>
+                            <OverflowToolbar>
+                                <Title id="todolist-title" text="List Details" visible="true" />
+                                <ToolbarSpacer />
+
+                                <Button text="New Todo" icon="sap-icon://add" type="Transparent"  />
+                                <OverflowToolbarButton text="Edit Todo List" icon="sap-icon://edit" type="Transparent" >
+                                    <layoutData>
+                                        <OverflowToolbarLayoutData priority="AlwaysOverflow" />
+                                    </layoutData>
+                                </OverflowToolbarButton>
+                                <OverflowToolbarButton text="Delete Todo List" icon="sap-icon://delete" type="Transparent" >
+                                    <layoutData>
+                                        <OverflowToolbarLayoutData priority="AlwaysOverflow" />
+                                    </layoutData>
+                                </OverflowToolbarButton>
+                            </OverflowToolbar>
+                        </customHeader>
+                    </Page>
+                </masterPages>               
+
+                <detailPages>
+                    <Page showHeader="false">
+                        <Button text="New List" icon="sap-icon://add" type="Emphasized" class="sapUiMediumMarginBegin sapUiTinyMarginTop" press=".onCreateTodoList" />
+                        <Panel id="todolist-panel" content="{/TodoList}" backgroundDesign="Transparent">
+                            <content>
+                                <GenericTile header="{name}" class="sapUiSmallMargin" press=".onSelectTodoList" />
+                            </content>
+                        </Panel>
+                    </Page>
+                </detailPages>
+            </SplitContainer>
         </content>
     </Page>
 </mvc:View>
