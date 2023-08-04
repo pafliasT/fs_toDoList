@@ -1,12 +1,32 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller"
+    "sap/ui/core/mvc/Controller",
+    "sap/m/MessageToast",
+    "sap/m/MessageBox",
 ],
-    function (Controller) {
+    function (Controller, MessageToast, MessageBox) {
         "use strict";
 
         return Controller.extend("com.todolist.primary.controller.Main", {
             onInit: function () {
                 this.updateTodoListStatistics();
+            },
+            onCreateTodoList: async function () {
+                const sEndpoint = "/todoapi/createTodoList";
+                const oPayload = {
+                    ID:   uuid.v4(),
+                    name: "New List"
+                };
+
+                axios.post(sEndpoint, oPayload)
+                    .then(function () {
+                        MessageToast.show("Todo List created successfully!");
+                        this.byId("todolist-panel").getBinding("content").refresh();
+                        this.updateTodoListStatistics();
+                    }.bind(this))
+                    .catch(function (oError) {
+                        const sErrorMessage = oError && oError.responseJSON && oError.responseJSON.error ? oError.responseJSON.error.message : "An unexpected error occurred";
+                        MessageBox.error(sErrorMessage, { title: "Error Creating Todo List" });
+                    });
             },
             updateTodoListStatistics: function () {
                 this.getOwnerComponent().getModel().bindList("/TodoItem").requestContexts().then(function (aContexts) {
