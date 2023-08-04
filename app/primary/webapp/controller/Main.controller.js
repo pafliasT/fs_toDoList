@@ -80,6 +80,26 @@ sap.ui.define([
                         MessageBox.error(sErrorMessage, { title: "Error Deleting Todo List" });
                     });
             },
+            onCreateTodoItem: function () {
+                const sSelectedTodoListID = this.getView().getModel("state").getProperty("/selectedTodoList");
+                const sEndpoint = "/todoapi/createTodoItem";
+                const oPayload = {
+                    ID: uuid.v4(),
+                    name: "New Item",
+                    todoList_ID: sSelectedTodoListID
+                };
+
+                axios.post(sEndpoint, oPayload)
+                    .then(function () {
+                        MessageToast.show("Todo Item created successfully!");
+                        this.displayTodoListItems(sSelectedTodoListID);
+                        this.updateTodoListStatistics(sSelectedTodoListID);
+                    }.bind(this))
+                    .catch(function (oError) {
+                        const sErrorMessage = oError && oError.responseJSON && oError.responseJSON.error ? oError.responseJSON.error.message : "An unexpected error occurred";
+                        MessageBox.error(sErrorMessage, { title: "Error Creating Todo Item" });
+                    });
+            },
             bindTodoListNameToMasterTitle: function (sTodoListID) {
                 const oTitleControl = this.getView().byId("todolist-title");
                 const oTitleInputControl = this.getView().byId("todolist-title-input");

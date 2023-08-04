@@ -13,7 +13,7 @@
 
                                 <ToolbarSpacer />
 
-                                <Button text="New Todo" icon="sap-icon://add" type="Transparent"  />
+                                <Button text="New Todo" icon="sap-icon://add" type="Transparent" press=".onCreateTodoItem" />
                                 <OverflowToolbarButton text="Edit Todo List" icon="sap-icon://edit" type="Transparent" press=".onStartEditTodoList" >
                                     <layoutData>
                                         <OverflowToolbarLayoutData priority="AlwaysOverflow" />
