@@ -9,7 +9,7 @@ sap.ui.define([
 
         return Controller.extend("com.todolist.primary.controller.Main", {
             onInit: function () {
-                const oStateModel = new JSONModel({ selectedTodoList:  null });
+                const oStateModel = new JSONModel({ selectedTodoList:  null, mode: 'HideMode' });
                 this.getView().setModel(oStateModel, "state");
 
                 this.updateTodoListStatistics();
@@ -17,6 +17,7 @@ sap.ui.define([
             onSelectTodoList: function (oEvent) {
                 const sTodoListID = oEvent.getSource().getBindingContext().getProperty("ID");
                 this.getView().getModel("state").setProperty("/selectedTodoList", sTodoListID);
+                this.bindTodoListNameToMasterTitle(sTodoListID);
             },
             onCreateTodoList: function () {
                 const sEndpoint = "/todoapi/createTodoList";
@@ -36,6 +37,25 @@ sap.ui.define([
                         MessageBox.error(sErrorMessage, { title: "Error Creating Todo List" });
                     });
             },
+            onStartEditTodoList: function () {
+                const oTitleControl = this.byId("todolist-title");
+                const oTitleInputControl = this.byId("todolist-title-input");
+
+                oTitleControl.setVisible(false);
+                oTitleInputControl.setVisible(true);
+            },
+            onFinishEditTodoList: function () {
+                const oTitleControl = this.byId("todolist-title");
+                const oTitleInputControl = this.byId("todolist-title-input");
+                const oTodoListsPanelControl = this.byId("todolist-panel");
+
+                oTitleControl.setText(oTitleInputControl.getValue());
+                oTodoListsPanelControl.getBinding("content").refresh();
+                this.updateTodoListStatistics();
+                
+                oTitleControl.setVisible(true);
+                oTitleInputControl.setVisible(false);
+            },
             onDeleteTodoList: function () {
                 const sEndpoint = "/todoapi/deleteTodoList";
                 const oPayload = { ID: this.getView().getModel("state").getProperty("/selectedTodoList") };
@@ -51,6 +71,16 @@ sap.ui.define([
                         const sErrorMessage = oError && oError.responseJSON && oError.responseJSON.error ? oError.responseJSON.error.message : "An unexpected error occurred";
                         MessageBox.error(sErrorMessage, { title: "Error Deleting Todo List" });
                     });
+            },
+            bindTodoListNameToMasterTitle: function (sTodoListID) {
+                const oTitleControl = this.getView().byId("todolist-title");
+                const oTitleInputControl = this.getView().byId("todolist-title-input");
+
+                oTitleControl.bindElement({ path: `/TodoList(${ sTodoListID })` });
+                oTitleControl.bindProperty("text", { path: `name` });
+
+                oTitleInputControl.bindElement({ path: `/TodoList(${ sTodoListID })` });
+                oTitleInputControl.bindProperty("value", { path: `name` });
             },
             updateTodoListStatistics: function () {
                 this.getOwnerComponent().getModel().bindList("/TodoItem").requestContexts().then(function (aContexts) {

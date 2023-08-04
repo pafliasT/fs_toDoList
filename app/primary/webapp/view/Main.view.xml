@@ -3,16 +3,18 @@
     xmlns="sap.m">
     <Page id="page" showHeader="false">
         <content>
-            <SplitContainer>
+            <SplitContainer mode="{= ${state>/selectedTodoList} ? 'ShowHideMode' : 'HideMode' }" >
                 <masterPages>
                     <Page backgroundDesign="List" showHeader="true">
                         <customHeader>
                             <OverflowToolbar>
                                 <Title id="todolist-title" text="List Details" visible="true" />
+                                <Input id="todolist-title-input" value="List Details" placeholder="List Details" width="80%" visible="false" submit=".onFinishEditTodoList" />
+
                                 <ToolbarSpacer />
 
                                 <Button text="New Todo" icon="sap-icon://add" type="Transparent"  />
-                                <OverflowToolbarButton text="Edit Todo List" icon="sap-icon://edit" type="Transparent" >
+                                <OverflowToolbarButton text="Edit Todo List" icon="sap-icon://edit" type="Transparent" press=".onStartEditTodoList" >
                                     <layoutData>
                                         <OverflowToolbarLayoutData priority="AlwaysOverflow" />
                                     </layoutData>
