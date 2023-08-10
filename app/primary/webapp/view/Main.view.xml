@@ -44,7 +44,11 @@
                         <Button text="New List" icon="sap-icon://add" type="Emphasized" class="sapUiMediumMarginBegin sapUiTinyMarginTop" press=".onCreateTodoList" />
                         <Panel id="todolist-panel" content="{/TodoList}" backgroundDesign="Transparent">
                             <content>
-                                <GenericTile header="{name}" class="sapUiSmallMargin" press=".onSelectTodoList" />
+                                <GenericTile header="{name}" class="sapUiSmallMargin" press=".onSelectTodoList">
+                                    <TileContent footer="Complete">
+                                        <NumericContent value="3/6" icon="sap-icon://activity-items" withMargin="false" />
+                                    </TileContent>
+                                </GenericTile>
                             </content>
                         </Panel>
                     </Page>
