@@ -42,7 +42,12 @@
                 <detailPages>
                     <Page showHeader="false">
                         <Button text="New List" icon="sap-icon://add" type="Emphasized" class="sapUiMediumMarginBegin sapUiTinyMarginTop" press=".onCreateTodoList" />
-                        <Panel id="todolist-panel" content="{/TodoList}" backgroundDesign="Transparent">
+                        <Panel id="todolist-panel" content="{
+                            path: '/TodoList',
+                            sorter: {
+                                path: 'createdAt'
+                            }
+                        }" backgroundDesign="Transparent">
                             <content>
                                 <GenericTile header="{name}" class="sapUiSmallMargin" press=".onSelectTodoList">
                                     <TileContent footer="Complete">

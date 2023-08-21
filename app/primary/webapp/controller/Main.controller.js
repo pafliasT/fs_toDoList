@@ -1,30 +1,18 @@
-sap.ui.define(
-    [
-        "sap/ui/core/mvc/Controller",
-        "sap/m/MessageToast",
-        "sap/m/MessageBox",
-        "sap/ui/model/json/JSONModel",
-        "sap/ui/model/Filter",
-        "sap/ui/model/FilterOperator",
-        "sap/m/ColumnListItem",
-        "sap/m/Text",
-        "sap/m/Input",
-        "sap/m/Button",
-        "sap/m/CheckBox",
-    ],
-    function (
-        Controller,
-        MessageToast,
-        MessageBox,
-        JSONModel,
-        Filter,
-        FilterOperator,
-        ColumnListItem,
-        Text,
-        Input,
-        Button,
-        CheckBox
-    ) {
+sap.ui.define([
+    "sap/ui/core/mvc/Controller",
+    "sap/m/MessageToast",
+    "sap/m/MessageBox",
+    "sap/ui/model/json/JSONModel",
+    "sap/ui/model/Sorter",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
+    "sap/m/ColumnListItem",
+    "sap/m/Text",
+    "sap/m/Input",
+    "sap/m/Button",
+    "sap/m/CheckBox",
+],
+    function (Controller, MessageToast, MessageBox, JSONModel, Sorter, Filter, FilterOperator, ColumnListItem, Text, Input, Button, CheckBox) {
         "use strict";
 
         return Controller.extend("com.todolist.primary.controller.Main", {
@@ -277,6 +265,7 @@ sap.ui.define(
 
                 oDetails.bindAggregation("items", {
                     path: "/TodoItem",
+                    sorter: new Sorter("createdAt"),
                     filters: new Filter("todoList_ID", FilterOperator.EQ, sTodoListId),
                     template: new ColumnListItem({
                         cells: [
