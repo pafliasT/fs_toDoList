@@ -116,6 +116,7 @@ sap.ui.define([
                     .then(
                         function () {
                             MessageToast.show("Todo List deleted succesfully!");
+                            this.getView().getModel("state").setProperty("/selectedTodoList", null);
                             this.byId("todolist-panel").getBinding("content").refresh();
                             this.updateTodoListStatistics();
                         }.bind(this)
