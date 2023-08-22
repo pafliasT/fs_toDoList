@@ -26,15 +26,9 @@ sap.ui.define([
                 this.updateTodoListStatistics();
             },
             onSelectTodoList: function (oEvent) {
-                const sTodoListID = oEvent
-                    .getSource()
-                    .getBindingContext()
-                    .getProperty("ID");
-                this.getView()
-                    .getModel("state")
-                    .setProperty("/selectedTodoList", sTodoListID);
-                this.bindTodoListNameToMasterTitle(sTodoListID);
-                this.displayTodoListItems(sTodoListID);
+                const sTodoListId = oEvent.getSource().getBindingContext().getProperty("ID");
+                console.log(sTodoListId);
+                this.selectTodoList(sTodoListId);
             },
             onCreateTodoList: function () {
                 const sEndpoint = "/todoapi/createTodoList";
@@ -50,6 +44,9 @@ sap.ui.define([
                             MessageToast.show("Todo List created successfully!");
                             this.byId("todolist-panel").getBinding("content").refresh();
                             this.updateTodoListStatistics();
+                            console.log(oPayload.ID);
+                            this.selectTodoList(oPayload.ID);
+                            this.onStartEditTodoList()
                         }.bind(this)
                     )
                     .catch(function (oError) {
@@ -288,6 +285,11 @@ sap.ui.define([
                     }),
                 });
             },
+            selectTodoList: function (sTodoListId) {
+                this.getView().getModel("state").setProperty("/selectedTodoList", sTodoListId);
+                this.bindTodoListNameToMasterTitle(sTodoListId);
+                this.displayTodoListItems(sTodoListId);
+            }
         });
     }
 );
