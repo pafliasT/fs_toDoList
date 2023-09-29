@@ -1,7 +1,64 @@
 <mvc:View controllerName="com.todolist.primary.controller.Main"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
-        <content />
+    <Page id="page" showHeader="false">
+        <content>
+            <SplitContainer mode="{= ${state>/selectedTodoList} ? 'ShowHideMode' : 'HideMode' }" >
+                <masterPages>
+                    <Page backgroundDesign="List" showHeader="true">
+                        <customHeader>
+                            <OverflowToolbar>
+                                <Title id="todolist-title" text="List Details" visible="true" />
+                                <Input id="todolist-title-input" value="List Details" placeholder="List Details" width="80%" visible="false" submit=".onFinishEditTodoList" />
+
+                                <ToolbarSpacer />
+
+                                <Button text="New Todo" icon="sap-icon://add" type="Transparent" press=".onCreateTodoItem" />
+                                <OverflowToolbarButton text="Edit Todo List" icon="sap-icon://edit" type="Transparent" press=".onStartEditTodoList" >
+                                    <layoutData>
+                                        <OverflowToolbarLayoutData priority="AlwaysOverflow" />
+                                    </layoutData>
+                                </OverflowToolbarButton>
+                                <OverflowToolbarButton text="Delete Todo List" icon="sap-icon://delete" type="Transparent" press=".onDeleteTodoList" >
+                                    <layoutData>
+                                        <OverflowToolbarLayoutData priority="AlwaysOverflow" />
+                                    </layoutData>
+                                </OverflowToolbarButton>
+                            </OverflowToolbar>
+                        </customHeader>
+
+                        <Table id="todolist-items">
+                            <columns>
+                                <Column width="3rem" />
+                                <Column/>
+                                <Column width="2.6rem" hAlign="End"/>
+                                <Column width="2.7rem" hAlign="End"/>
+                            </columns>
+                            <items/>
+                        </Table>
+                    </Page>
+                </masterPages>               
+
+                <detailPages>
+                    <Page showHeader="false">
+                        <Button text="New List" icon="sap-icon://add" type="Emphasized" class="sapUiMediumMarginBegin sapUiTinyMarginTop" press=".onCreateTodoList" />
+                        <Panel id="todolist-panel" content="{
+                            path: '/TodoList',
+                            sorter: {
+                                path: 'createdAt'
+                            }
+                        }" backgroundDesign="Transparent">
+                            <content>
+                                <GenericTile header="{name}" class="sapUiSmallMargin" press=".onSelectTodoList">
+                                    <TileContent footer="Complete">
+                                        <NumericContent value="3/6" icon="sap-icon://activity-items" withMargin="false" />
+                                    </TileContent>
+                                </GenericTile>
+                            </content>
+                        </Panel>
+                    </Page>
+                </detailPages>
+            </SplitContainer>
+        </content>
     </Page>
 </mvc:View>

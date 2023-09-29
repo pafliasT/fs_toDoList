@@ -68,7 +68,8 @@ modules:
       commands:
         - npm install
         - 'npm run build:cf'
-      supported-platforms: []
+      supported-platforms:
+        []
 resources:
   - name: toDoList-db
     type: com.sap.xs.hdi-container

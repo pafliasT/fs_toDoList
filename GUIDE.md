@@ -219,5 +219,5 @@ $ cds bind --to toDoList-db:toDoList-db-key
 
 After that we're free to run our application with hana which is deployed in Cloud Foundry.
 ```console
-$ npm run start
+$ cds watch --profile hybrid
 ```
