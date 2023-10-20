@@ -13,13 +13,13 @@
 
                                 <ToolbarSpacer />
 
-                                <Button text="New Todo" icon="sap-icon://add" type="Transparent" press=".onCreateTodoItem" />
-                                <OverflowToolbarButton text="Edit Todo List" icon="sap-icon://edit" type="Transparent" press=".onStartEditTodoList" >
+                                <Button text="{i18n>newToDo}" icon="sap-icon://add" type="Transparent" press=".onCreateTodoItem" />
+                                <OverflowToolbarButton text="{i18n>editToDoList}" icon="sap-icon://edit" type="Transparent" press=".onStartEditTodoList" >
                                     <layoutData>
                                         <OverflowToolbarLayoutData priority="AlwaysOverflow" />
                                     </layoutData>
                                 </OverflowToolbarButton>
-                                <OverflowToolbarButton text="Delete Todo List" icon="sap-icon://delete" type="Transparent" press=".onDeleteTodoList" >
+                                <OverflowToolbarButton text="{i18n>deleteToDoList}" icon="sap-icon://delete" type="Transparent" press=".onDeleteTodoList" >
                                     <layoutData>
                                         <OverflowToolbarLayoutData priority="AlwaysOverflow" />
                                     </layoutData>
@@ -41,7 +41,7 @@
 
                 <detailPages>
                     <Page showHeader="false">
-                        <Button text="New List" icon="sap-icon://add" type="Emphasized" class="sapUiMediumMarginBegin sapUiTinyMarginTop" press=".onCreateTodoList" />
+                        <Button text="{i18n>newList}" icon="sap-icon://add" type="Emphasized" class="sapUiMediumMarginBegin sapUiTinyMarginTop" press=".onCreateTodoList" />
                         <Panel id="todolist-panel" content="{
                             path: '/TodoList',
                             sorter: {
