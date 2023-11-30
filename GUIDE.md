@@ -142,7 +142,7 @@ Open the console and type the following commands.
 ```console
 $ npm i
 $ npm i -g @sap/cds-dk
-$ npm -g @sap/cds
+$ npm i -g @sap/cds
 $ npm i -g mbt
 ```
 
